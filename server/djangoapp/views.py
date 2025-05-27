@@ -46,13 +46,13 @@ def logout_request(request):
     return JsonResponse(data)
 
 # Create a `registration` view to handle sign up request
-# @csrf_exempt
+@csrf_exempt
 def registration(request):
     context = {}
 
     # Load JSON data from the request body
-    data = json.load(request.body)
-    username = data['username']
+    data = json.loads(request.body)
+    username = data['userName']
     password = data['password']
     first_name = data['firstName']
     last_name = data['lastName']
@@ -66,6 +66,11 @@ def registration(request):
     except:
         # If not, simply log this is a new user
         logger.debug("{} is new user".format(username))
+
+    # If it is a new user
+    if not username_exist:
+        # Create user in auth_user table
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=password, email=email)
         # Login the user and redirect to list page
         login(request, user)
         data = {"userName":username,"status":"Authenticated"}
