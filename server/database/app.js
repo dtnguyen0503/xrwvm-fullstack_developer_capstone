@@ -72,9 +72,15 @@ app.get('/fetchDealers/:state', async (req, res) => {
 //Write your code here
     try {
         const state = req.params.state;
-        const dealers = await Dealerships.find({ state: state });
-        req.json(dealers);
+        const dealers = await Dealerships.find({ state: new RegExp(`^${state}$` , 'i') });
+
+        if(dealers.length === 0) {
+            return res.status(404).json({ message: `No dealers found in state: ${state}` });
+        }
+
+        res.json(dealers);
     } catch (error) {
+        console.error("Error in /fetchDealers/:state", error);
         res.status(500).json({ error: 'Error fetching dealers by state' });
     }
 });
