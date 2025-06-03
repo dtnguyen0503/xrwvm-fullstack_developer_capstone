@@ -38,11 +38,15 @@ urlpatterns = [
 # Serve manifest.json from React build directory
 urlpatterns += [
     re_path(r'^manifest\.json$', serve, {
+        'document_root': settings.STATICFILES_DIRS[0],  # assumes it's in frontend/static
         'path': 'manifest.json',
-        'document_root': os.path.join(settings.BASE_DIR, 'frontend', 'build'),
     }),
-    re_path(r'^logo192\.png$', serve, {
-        'path': 'logo192.png',
-        'document_root': os.path.join(settings.BASE_DIR, 'frontend', 'build'),
-    }),
+    # re_path(r'^manifest\.json$', serve, {
+    #     'path': 'manifest.json',
+    #     'document_root': os.path.join(settings.BASE_DIR, 'frontend', 'build'),
+    # }),
+    # re_path(r'^logo192\.png$', serve, {
+    #     'path': 'logo192.png',
+    #     'document_root': os.path.join(settings.BASE_DIR, 'frontend', 'build'),
+    # }),
 ]

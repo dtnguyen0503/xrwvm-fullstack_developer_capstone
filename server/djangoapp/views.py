@@ -107,7 +107,12 @@ def get_dealer_reviews(request, dealer_id):
         for review_detail in reviews:
             try:
                 response = analyze_review_sentiments(review_detail['review'])
-                review_detail['sentiment'] = response['sentiment'] if response else "unknown"
+                if response and 'sentiment' in response:
+                    review_detail['sentiment'] = response['sentiment']
+                else:
+                    review_detail['sentiment'] = "unknown"
+
+                #review_detail['sentiment'] = response['sentiment'] if response else "unknown"
             except Exception as e:
                 logger.warning(f"Sentiment analysis failed: {e}")
                 review_detail['sentiment'] = "unknown"
