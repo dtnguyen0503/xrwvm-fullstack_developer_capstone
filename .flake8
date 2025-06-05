@@ -2,10 +2,14 @@
 max-line-length = 100
 exclude = 
     */migrations/*
-    __pycache__
+    __pycache__,
+    env,
+    venv,
+    .venv,
     manage.py
 
 ignore =
     E501  # line too long
     W503  # line break before binary operator
     F401  # imported but unused (optional)
+    E722  # Avoid bare 'except' errors during dev
