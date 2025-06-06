@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
-from django.conf import settings
+
 from django.urls import re_path
 import os
 

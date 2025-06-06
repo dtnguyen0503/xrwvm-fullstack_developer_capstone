@@ -1,5 +1,4 @@
-from django.shortcuts import render
-#from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
@@ -50,7 +49,7 @@ def logout_request(request):
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
-    context = {}
+    #context = {}
 
     # Load JSON data from the request body
     data = json.loads(request.body)
@@ -60,13 +59,14 @@ def registration(request):
     last_name = data["lastName"]
     email = data["email"]
     username_exist = False
-    email_exist = False
+    #email_exist = False
     try:
         # Check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except:
+    except Exception as e:
         # If not, simply log this is a new user
+        print(f"Error: {e}")
         logger.debug("{} is new user".format(username))
 
     # If it is a new user
@@ -145,9 +145,10 @@ def add_review(request):
     if request.user.is_anonymous == False:
         data = json.loads(request.body)
         try:
-            response = post_review(data)
+            #response = post_review(data)
             return JsonResponse({"status": 200})
-        except:
+        except Exception as e:
+            print(f"Error: {e}")
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
