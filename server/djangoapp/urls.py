@@ -2,11 +2,11 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
-# from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import get_request, analyze_review_sentiments, post_review
 
 app_name = "djangoapp"
 urlpatterns = [
-    # # path for registration
+    # path for registration
     path(route="register", view=views.registration, name="register"),
     # path for login
     path(route="login", view=views.login_user, name="login"),
