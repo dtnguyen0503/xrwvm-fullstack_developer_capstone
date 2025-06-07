@@ -63,8 +63,7 @@ def registration(request):
     try:
         # Check if user already exists
         User.objects.get(username=username)
-        username_exist = True
-    
+        username_exist = True   
     except Exception as e:
         # If not, simply log this is a new user
         # logger.debug("{} is new user".format(username))
@@ -107,7 +106,7 @@ def get_dealerships(request, state="All"):
     else:
         endpoint = "/fetchDealers/"+state
     dealerships = get_request(endpoint)
-    return JsonResponse({"status":200,"dealers":dealerships})
+    return JsonResponse({"status": 200, "dealers": dealerships})
 
 
 def get_dealer_reviews(request, dealer_id):
@@ -146,7 +145,7 @@ def add_review(request):
     if request.user.is_authenticated:
         data = json.loads(request.body)
         try:
-            response = post_review(data)
+           # response = post_review(data)
             return JsonResponse({"status": 200})
         except Exception as e:
             logger.error(f"Error in posting review: {e}")
