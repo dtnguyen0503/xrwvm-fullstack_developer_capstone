@@ -22,7 +22,7 @@ from django.conf import settings
 from django.views.static import serve
 
 from django.urls import re_path
-import os
+# import os
 
 urlpatterns = [
     path("admin/", admin.site.urls),
