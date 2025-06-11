@@ -20,12 +20,12 @@ spec:
         run: dealership
     spec:
       containers:
-      - image: us.icr.io/sn-labs-stevennguye1/dealership:public
+      - image: us.icr.io/sn-labs-stevennguye1/dealership:latest-public
         imagePullPolicy: Always
         name: dealership
         ports:
         - containerPort: 8000
           protocol: TCP
       restartPolicy: Always
-      imagePullSecrets:
-      - name: icr-secret
+      # imagePullSecrets:
+      # - name: icr-secret

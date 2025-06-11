@@ -12,7 +12,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
 from .models import CarMake, CarModel
-from .restapis import get_request, analyze_review_sentiments
+from .restapis import get_request, analyze_review_sentiments, post_review
 
 
 # Get an instance of a logger
@@ -141,14 +141,31 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
 
+# def add_review(request):
+#     if request.user.is_authenticated:
+#         try:
+#             data = json.loads(request.body)
+#             response = post_review(data)
+#             return JsonResponse({"status": 200})
+#         except Exception as e:
+#             logger.error(f"Error in posting review: {e}")
+#             return JsonResponse({"status": 401, "message": "Error in posting review"})
+#     else:
+#         return JsonResponse({"status": 403, "message": "Unauthorized"})
+
+
+@csrf_exempt
 def add_review(request):
-    if request.user.is_authenticated:
-        # data = json.loads(request.body)
+    if request.method == "POST" and request.user.is_authenticated:
         try:
-            # response = post_review(data)
+            data = json.loads(request.body)
+            response = post_review(data)
+
+            if response.get("error"):
+                return JsonResponse({"status": 500, "message": "Backend error occurred"})
             return JsonResponse({"status": 200})
         except Exception as e:
             logger.error(f"Error in posting review: {e}")
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse({"status": 400, "message": "Invalid request"})
     else:
-        return JsonResponse({"status": 403, "message": "Unauthorized"})
+        return JsonResponse({"status": 403, "message": "Unauthorized or wrong method"})
