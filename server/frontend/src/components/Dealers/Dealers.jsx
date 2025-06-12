@@ -40,11 +40,32 @@ const Dealers = () => {
 
       setStates(Array.from(new Set(states)))
       setDealersList(all_dealers)
+      setOriginalDealers(all_dealers);
     }
   }
   useEffect(() => {
     get_dealers();
   },[]);  
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const [originalDealers, setOriginalDealers] = useState([]);
+
+  const handleInputChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    const filtered = originalDealers.filter(dealer =>
+      dealer.state.toLowerCase().includes(query.toLowerCase())
+    );
+    setDealersList(filtered);
+    };
+
+  const handleLostFocus = () => {
+    if (!searchQuery) {
+        setDealersList(originalDealers);
+    }
+  }
+
 
 
 let isLoggedIn = sessionStorage.getItem("username") != null ? true : false;
@@ -60,13 +81,13 @@ return(
       <th>Address</th>
       <th>Zip</th>
       <th>
-      <select name="state" id="state" onChange={(e) => filterDealers(e.target.value)}>
-      <option value="" selected disabled hidden>State</option>
+      <input type="text" placeholder="Search states..." onChange={handleInputChange} onBlur={handleLostFocus} value={searchQuery} />
+      {/* <option value="" selected disabled hidden>State</option>
       <option value="All">All States</option>
       {states.map(state => (
           <option value={state}>{state}</option>
-      ))}
-      </select>        
+      ))} */}
+            
 
       </th>
       {isLoggedIn ? (
